@@ -4,7 +4,7 @@ const app = express()
 const mongoose = require("mongoose");
 
 //detabase conections
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.connect(process.env.LOCAL_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
@@ -14,6 +14,9 @@ app.use(express.json());
 
 const productsRouter = require("./routes/product");
 
+app.get("/", function (req, res) {
+  res.send("hi sudeepa iam masage from home");
+});
 
 app.use("/api/products", productsRouter)
 
