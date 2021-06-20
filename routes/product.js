@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Products = require("../models/product");
+const getProduct = require("../middleware/getProduct");
 
 // Get All Peoducts
 router.get("/", async (req, res) => {
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
     res.status(505).json({ message: error.message });
   }
 });
-// 60cdc0745a4b3329346a56c8
+
 // Getting One Peoducts
 router.get("/:id", getProduct, async (req, res) => {
   res.json(res.product);
@@ -35,30 +36,33 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One Peoducts
-// router.patch("/", async ()=>{
-
-// })
-
-// Deleting One Peoducts
-// router.delete("/", async ()=>{
-
-// })
-
-//middleware
-async function getProduct(req, res, next) {
-  let products;
-  try {
-    products = await Products.findById(req.params.id);
-   
-    if (products == null) {
-      return res.status(404).json({ message: "Cannnot find any products" });
-    }
-  } catch (error) {
-    res.status(505).json({ message: error.message });
+router.patch("/:id", getProduct, async (req, res) => {
+  if (req.body.name !== null) {
+    res.product.name = req.body.name;
   }
- 
-  res.product = products;
-  next();
-}
+  if (req.body.price !== null) {
+    res.product.price = req.body.price;
+  }
+  if (req.body.qnt !== null) {
+    res.product.qnt = req.body.qnt;
+  }
+  try {
+    const update = res.product.save();
+    res.status(200).json({ message: "Update product successful" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
 
+//Deleting One Peoducts
+router.delete("/:id", getProduct, async (req, res) => {
+  try {
+    await res.product.remove();
+    res.status(200).json({ message: "Deleted product successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//Export
 module.exports = router;
