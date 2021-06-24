@@ -13,13 +13,14 @@ app.use(express.json());
 
 
 const productsRouter = require("./routes/product");
+const userRouter = require("./routes/users")
 
 app.get("/", function (req, res) {
   res.send("hi sudeepa iam masage from home");
 });
 
 app.use("/api/products", productsRouter)
-
+app.use("/api/users", userRouter)
 
 
 app.listen(process.env.PORT, () => {
