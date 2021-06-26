@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
-
-const Users = require("../models/Users");
+const Users = require("../models/users");
 
 async function auth(req, res, next) {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decode = await jwt.verify(token, "hgfhgdffjhsgjhsghjsgjhksgjhksgjhsgdjhsagdjkhgskgskjgskjghkjsdhgkshg");
+    const token = req.header("meico").replace("Bearer ", "");
+    const decode = await jwt.verify(token, `${process.env.SERECT_KEY}`);
     const user = await Users.findOne({
       _id: decode._id,
       "tokens.token": token,

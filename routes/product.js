@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Products = require("../models/product");
 const getProduct = require("../middleware/getProduct");
-
+const auth = require("../middleware/Auth")
 // Get All Peoducts
 router.get("/", async (req, res) => {
   try {
@@ -36,10 +36,12 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One Peoducts
-router.patch("/:id", getProduct, async (req, res) => {
+router.patch("/:id", auth, getProduct, async (req, res) => {
+
   if (req.body.name !== null) {
-    res.product.name = req.body.name;
+    res.product.name = req.user.name;
   }
+  
   if (req.body.price !== null) {
     res.product.price = req.body.price;
   }
@@ -48,7 +50,7 @@ router.patch("/:id", getProduct, async (req, res) => {
   }
   try {
     const update = res.product.save();
-    res.status(200).json({ message: "Update product successful" });
+    res.status(201).json({ message: "Update product successful" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
