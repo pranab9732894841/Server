@@ -4,13 +4,13 @@ const Users = require("../models/users");
 const getProduct = require("../middleware/getProduct");
 
 //singin
-router.get("/", async (req, res) => {
+router.post("/singin", async (req, res) => {
   try {
     const user = await Users.findByCredentials(
       req.body.email,
       req.body.pasword
     );
-    console.log(user);
+
     const token = await user.generateAuthToken();
     res.status(202).json({ user, token });
   } catch (error) {
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 //singup
-router.post("/", async (req, res) => {
+router.post("/singup", async (req, res) => {
   const user = new Users(req.body);
   try {
     const token = await user.generateAuthToken();
