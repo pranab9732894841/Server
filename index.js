@@ -5,7 +5,7 @@ const cors = require('cors')
 const mongoose = require("mongoose");
 
 //detabase conections
-mongoose.connect(process.env.LOCAL_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+mongoose.connect(process.env.ONLINE_DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
