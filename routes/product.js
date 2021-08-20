@@ -36,8 +36,8 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One Peoducts
-router.patch("/:id", auth, getProduct, async (req, res) => {
-
+router.patch("/:id",  getProduct, async (req, res) => {
+  console.log(req.body);
   if (req.body.name !== null) {
     res.product.name = req.user.name;
   }
@@ -48,6 +48,7 @@ router.patch("/:id", auth, getProduct, async (req, res) => {
   if (req.body.qnt !== null) {
     res.product.qnt = req.body.qnt;
   }
+
   try {
     const update = res.product.save();
     res.status(201).json({ message: "Update product successful" });
